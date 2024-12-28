@@ -8,22 +8,13 @@ public class NoFall extends Hack{
     private boolean fast(ClientPlayerEntity player){
         return player.getVelocity().y < -0.5;
     }
-    ClientPlayerEntity player = MinecraftClient.getInstance().player;
+    public void toggle(){
+        super.toggle();
+    }
     @Override
     public void tick(){
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if(this.isEnabled() && player != null){
-            if(player.isCreative()){
-                return;
-            }
-
-            if(player.isGliding()){
-                return;
-            }
-
-            if(player.isGliding() && player.isSneaking() && !fast(player)){
-                return;
-            }
-
             player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision));
         }
     }
