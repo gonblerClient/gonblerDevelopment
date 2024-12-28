@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "peanut-client",
+	"version": "1.0.0",
+	"name": "Peanut Client",
+	"description": "Hacks",
+	"authors": [
+		"EpsteinGaming362"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/peanut-client/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"hacks.epstein.peanut.PeanutClient"
+		],
+		"client": [
+			"hacks.epstein.peanut.PeanutClientClient"
+		],
+		"fabric-datagen": [
+			"hacks.epstein.peanut.PeanutClientDataGenerator"
+		]
+	},
+	"mixins": [
+		"peanut-client.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.3",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "hacks/epstein/peanut/mixin/GameMenuScreenMixin": {
+      "initWidgets": "Lnet/minecraft/class_433;method_20543()V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "hacks/epstein/peanut/mixin/GameMenuScreenMixin": {
+        "initWidgets": "Lnet/minecraft/class_433;method_20543()V"
+      }
+    }
+  }
+}
