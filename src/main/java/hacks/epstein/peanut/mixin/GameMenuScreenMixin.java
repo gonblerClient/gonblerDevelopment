@@ -22,15 +22,13 @@ public abstract class GameMenuScreenMixin extends Screen {
     @Inject(method = "initWidgets", at=@At("HEAD"))
     void initWidgets(CallbackInfo ci){
         var buttonWidget = ButtonWidget.builder(
-                Text.of("gonbler Hacks"),
+                Text.of("Gonbler"),
                 button -> {
                     if(MinecraftClient.getInstance() != null){
                         MinecraftClient.getInstance().setScreen(new HackScreen(this));
                     }
                 }
         ).position(5,5).build();
-        TextWidget label = new TextWidget(5,27,100,10,Text.of("gonbler Client"), MinecraftClient.getInstance().textRenderer);
-        this.addDrawableChild(label);
         this.addDrawableChild(buttonWidget);
     }
 }

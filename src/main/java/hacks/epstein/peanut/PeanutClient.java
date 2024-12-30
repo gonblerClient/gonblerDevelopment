@@ -4,19 +4,29 @@ package hacks.epstein.peanut;
 import hacks.epstein.peanut.modules.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +34,8 @@ public class PeanutClient implements ModInitializer{
 	public static final String MOD_ID = "peanut-client";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	private static final List<Hack> HACKS = new ArrayList<>();
+	private KeyBinding menuButton;
+
 
 	private static void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {
 		var textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -52,14 +64,29 @@ public class PeanutClient implements ModInitializer{
 		HACKS.add(new AntiAFK());
 		HACKS.add(new Dexter());
 		HACKS.add(new AutoEat());
+		HACKS.add(new AutoLog());
+		menuButton = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+			"rightShift.epstein.gonblerClient",
+				InputUtil.Type.KEYSYM,
+				GLFW.GLFW_KEY_RIGHT_SHIFT,
+				"menu.epstein.gonblerClient"
+		));
 		HudRenderCallback.EVENT.register(PeanutClient::onHudRender);
 		ClientTickEvents.START_CLIENT_TICK.register(client ->
-				HACKS.forEach(hack -> {
-							hack.tick();
+				{
+					HACKS.forEach(hack -> {
+								hack.tick();
+							}
+					);
+					if(menuButton.wasPressed()){
+						if(MinecraftClient.getInstance() != null){
+							MinecraftClient.getInstance().setScreen(new HackScreen(null));
 						}
-				)
+					}
+				}
 		);
 	}
+
 	public static void showEnabled(DrawContext context, TextRenderer renderer){
 		var offset = 29;
 		for(var hack : getHacks()){

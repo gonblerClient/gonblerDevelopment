@@ -13,7 +13,11 @@ public class Flight extends Hack{
     @Override
     public void tick(){
         var player = MinecraftClient.getInstance().player;
-        if(player != null)
-            player.getAbilities().allowFlying = this.enabled;
+        if(player != null){
+            if(!player.isCreative()){
+                player.getAbilities().allowFlying = this.enabled;
+            }
+        }
+
     }
 }
